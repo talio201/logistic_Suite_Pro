@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <title>LogisSuite Pro - Meu Perfil</title>
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4 md:p-8">
+        <div class="flex items-center justify-between mb-8">
+             <h1 class="text-3xl font-bold text-gray-800">Meu Perfil</h1>
+             <a href="./painel_gerencial_avancado.html" class="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 focus:outline-none">
+                <i class="fas fa-arrow-left mr-2"></i> Voltar ao Dashboard
+            </a>
+        </div>
+       
+        <div id="notification-area" class="mb-4"></div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-1">
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <h2 class="text-xl font-semibold mb-4">Foto de Perfil</h2>
+                    <img id="avatar-preview" src="https://i.pravatar.cc/150" alt="Avatar do Usuário" class="w-40 h-40 rounded-full mx-auto mb-4 object-cover border-4 border-gray-200">
+                    <form id="avatar-form">
+                        <label for="avatar-input" class="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 w-full inline-block">
+                            <i class="fas fa-upload mr-2"></i> Escolher Arquivo
+                        </label>
+                        <input type="file" id="avatar-input" name="avatar" class="hidden" accept="image/png, image/jpeg, image/gif">
+                        <button type="submit" id="upload-btn" class="mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 w-full hidden">
+                            <i class="fas fa-save mr-2"></i> Salvar Nova Foto
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="lg:col-span-1">
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <button id="generate-badge-btn" class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 w-full">
+                        <i class="fas fa-id-card mr-2"></i> Gerar Crachá
+                    </button>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-semibold mb-6">Informações Pessoais</h2>
+                    <form id="profile-form" class="space-y-4">
+                         </form>
+                    <hr class="my-8"/>
+                    <h2 class="text-xl font-semibold mb-6">Alterar Senha</h2>
+                    <form id="password-form" class="space-y-4">
+                        <div>
+                            <label for="currentPassword" class="block text-sm font-medium text-gray-700">Senha Atual</label>
+                            <input type="password" id="currentPassword" name="currentPassword" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                        </div>
+                        <div>
+                            <label for="newPassword" class="block text-sm font-medium text-gray-700">Nova Senha</label>
+                            <input type="password" id="newPassword" name="newPassword" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                        </div>
+                         <button type="submit" class="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700">Alterar Senha</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./assets/js/profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#16a34a', secondary: '#2563eb', dark: '#0f172a' }
+                }
+            }
+        }
+    </script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+    <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="shortcut icon" href="./icons/logistic_favicon_title.png" type="image/x-icon" />
+    <title>LogisSuite Pro - Painel de Controle</title>
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="flex h-screen bg-gray-200">
+        <aside class="w-64 bg-dark text-gray-200 flex-col hidden sm:flex">
+            <div class="px-6 py-4 border-b border-slate-700 flex items-center">
+                <img src="./icons/logistic_favicon_title.png" alt="Logo" class="h-8 w-8 mr-2">
+                <h1 class="text-xl font-bold text-white">LogisSuite Pro</h1>
+            </div>
+            
+            <nav id="main-nav" class="flex-grow px-4 py-4 space-y-2 overflow-y-auto">
+                <a href="#" class="flex items-center px-4 py-3 text-white bg-primary rounded-lg nav-link" data-page="overview"><i class="fas fa-tachometer-alt w-6 h-6 mr-3"></i>Dashboard</a>
+                <div class="text-xs uppercase text-gray-400 mt-6 mb-2 px-4">Gestão</div>
+                <a href="#" class="flex items-center px-4 py-3 text-gray-200 rounded-lg nav-link hover:bg-slate-700" data-page="table_products"><i class="fas fa-boxes w-6 h-6 mr-3"></i>Produtos</a>
+                <a href="#" class="flex items-center px-4 py-3 text-gray-200 rounded-lg nav-link hover:bg-slate-700" data-page="table_sales_by_product"><i class="fas fa-chart-line w-6 h-6 mr-3"></i>Vendas por Produto</a>
+                <a href="#" class="flex items-center px-4 py-3 text-gray-200 rounded-lg nav-link hover:bg-slate-700" data-page="table_orders"><i class="fas fa-clipboard-list w-6 h-6 mr-3"></i>Pedidos</a>
+                <a href="#" class="flex items-center px-4 py-3 text-gray-200 rounded-lg nav-link hover:bg-slate-700" data-page="table_invoices"><i class="fas fa-file-invoice-dollar w-6 h-6 mr-3"></i>Faturamento</a>
+                <a href="#" class="flex items-center px-4 py-3 text-gray-200 rounded-lg nav-link hover:bg-slate-700" data-page="table_expeditions"><i class="fas fa-route w-6 h-6 mr-3"></i>Expedições</a>
+                <a href="#" class="flex items-center px-4 py-3 text-gray-200 rounded-lg nav-link hover:bg-slate-700" data-page="table_deliveries"><i class="fas fa-truck w-6 h-6 mr-3"></i>Entregas</a>
+                <a href="#" class="flex items-center px-4 py-3 text-gray-200 rounded-lg nav-link hover:bg-slate-700" data-page="table_customers"><i class="fas fa-users w-6 h-6 mr-3"></i>Clientes</a>
+                <div class="text-xs uppercase text-gray-400 mt-6 mb-2 px-4">Administração</div>
+                <a href="#" class="flex items-center px-4 py-3 text-gray-200 rounded-lg nav-link hover:bg-slate-700" data-page="users_management"><i class="fas fa-user-cog w-6 h-6 mr-3"></i>Usuários</a>
+                
+                <div class="text-xs uppercase text-gray-400 mt-6 mb-2 px-4">Online Agora</div>
+                <div id="online-users-container" class="px-4 text-sm">
+                    <p class="text-gray-500 italic">Carregando...</p>
+                </div>
+            </nav>
+            
+            <div class="px-6 py-4 border-t border-slate-700">
+                <a href="#" id="logout-button" class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-red-700"><i class="fas fa-sign-out-alt w-6 h-6 mr-3"></i>Sair</a>
+            </div>
+        </aside>
+
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <header class="bg-white shadow p-4 flex justify-between items-center z-20">
+                <div class="flex items-center">
+                    <button id="sidebar-toggle" class="sm:hidden mr-4 text-gray-600"><i class="fas fa-bars text-xl"></i></button>
+                    <h2 class="text-2xl font-semibold text-gray-700" id="page-title">Dashboard</h2>
+                </div>
+                <div x-data="{ open: false }" class="relative">
+                    <button @click="open = !open" class="flex items-center space-x-2 relative focus:outline-none">
+                        <div class="text-right hidden md:block"><p class="text-sm font-semibold text-gray-700" id="welcome-message">Carregando...</p><p class="text-xs text-gray-500" id="user-position">...</p></div>
+                        <div class="relative"><img id="header-avatar" class="w-10 h-10 rounded-full object-cover" src="https://i.pravatar.cc/150" alt="Avatar"><span id="user-badge" class="absolute -bottom-1 -right-1 bg-green-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"></span></div>
+                    </button>
+                    <div x-show="open" @click.away="open = false" x-cloak class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl z-30" x-transition>
+                        <a href="./profile.html" class="block px-4 py-3 text-gray-800 hover:bg-gray-100"><i class="fas fa-user-circle mr-2"></i> Meu Perfil</a>
+                        <a href="#" class="block px-4 py-3 text-gray-800 hover:bg-gray-100" data-page="settings"><i class="fas fa-cog mr-2"></i> Configurações</a>
+                        <div class="border-t border-gray-200"></div>
+                        <a href="#" id="logout-button-dropdown" class="block px-4 py-3 text-gray-800 hover:bg-red-500 hover:text-white"><i class="fas fa-sign-out-alt mr-2"></i> Sair</a>
+                    </div>
+                </div>
+            </header>
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6" id="main-content"></main>
+        </div>
+    </div>
+    <script src="./assets/js/dashboard.js"></script>
+</body>
+</html>
